@@ -1,14 +1,19 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using Google.Apis.Compute.v1.Data;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 
 namespace PrzegladaraStrukturyDyskowej.Models
 {
     public class GetGata
     {
+        private string root = ConfigurationManager.AppSettings["root"];
         public List<File> GetValues(string path)
         {
             string[] files = Directory.GetFiles(path);
@@ -22,8 +27,6 @@ namespace PrzegladaraStrukturyDyskowej.Models
             foreach (string s in dirArr)
             {
                 FileInfo directory = new FileInfo(s);
-                Icon icon;
-
                 filesInformation.Add(GetDirInfo(directory, s));
             }
             foreach (string s in fileArr)
@@ -35,23 +38,29 @@ namespace PrzegladaraStrukturyDyskowej.Models
         }
         private File GetFileInfo(FileInfo fileInfo, string filePath)
         {
+            char[] MyChar0 = root.ToCharArray();
+            char[] MyChar1 = fileInfo.Name.ToCharArray();
             File info = new File {
                 FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = fileInfo.Name,
                 LastWriteTime = fileInfo.LastWriteTime,
                 FileType = fileInfo.Attributes.ToString(),
-                WeightByte = fileInfo.Length
+                WeightByte = fileInfo.Length.ToString(),
+                path=fileInfo.FullName.TrimStart(MyChar0).TrimEnd(MyChar1)
             };
             return info;
         }
         private File GetDirInfo(FileInfo dirInfo, string filePath)
         {
+            char[] MyChar0 = root.ToCharArray();
+            char[] MyChar1 = dirInfo.Name.ToCharArray();
             File info = new File
             {
-                FileIcon = Icon.ExtractAssociatedIcon(filePath),
+                //FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
+                path = dirInfo.FullName.TrimStart(MyChar0).TrimEnd(MyChar1)
             };
             return info;
         }

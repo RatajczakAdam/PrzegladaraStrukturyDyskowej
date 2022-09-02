@@ -11,7 +11,8 @@ namespace PrzegladaraStrukturyDyskowej.Models
         public Icon FileIcon { get; set; }
         public string Name { get; set; }
         public DateTime LastWriteTime { get; set; }
-        public long WeightByte { get; set; }
+        public string WeightByte { get; set; }
         public string FileType { get; set; }
+        public string path { get; set; }
     }
 }

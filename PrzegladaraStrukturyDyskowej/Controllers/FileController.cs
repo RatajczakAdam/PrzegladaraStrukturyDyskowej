@@ -17,7 +17,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         // GET: FileController
         public ActionResult Index()
         {
-            return Ok(data.GetValues(root));
+            return View(data.GetValues(root));
         }
 
         // GET: FileController/Details/5
@@ -32,20 +32,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             return View();
         }
 
-        // POST: FileController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
