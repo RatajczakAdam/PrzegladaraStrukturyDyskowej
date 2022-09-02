@@ -27,12 +27,16 @@ namespace PrzegladaraStrukturyDyskowej.Models
             foreach (string s in dirArr)
             {
                 FileInfo directory = new FileInfo(s);
-                filesInformation.Add(GetDirInfo(directory, s));
+                File dir = GetDirInfo(directory, s);
+                dir.id = filesInformation.Count + 1;
+                filesInformation.Add(dir);
             }
             foreach (string s in fileArr)
             {
                 FileInfo file = new FileInfo(s);
-                filesInformation.Add(GetFileInfo(file,s));
+                File fil = GetDirInfo(file, s);
+                fil.id = filesInformation.Count + 1;
+                filesInformation.Add(fil);
             }
             return filesInformation;
         }

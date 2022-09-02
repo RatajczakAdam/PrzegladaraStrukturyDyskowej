@@ -8,6 +8,7 @@ namespace PrzegladaraStrukturyDyskowej.Models
 {
     public class File
     {
+        public int id { get; set; }
         public Icon FileIcon { get; set; }
         public string Name { get; set; }
         public DateTime LastWriteTime { get; set; }
