@@ -16,13 +16,14 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         private static List<File> test = new List<File>();
         private string root = ConfigurationManager.AppSettings["root"];
         private GetGata data = new GetGata();
-
+        private static bool getFirstData = true;
         // GET: FileController
-        public ActionResult Index()
+        public ActionResult Index(string sortBy)
         {
-            if (test.Count == 0)
+            if (getFirstData)
             {
                 test = data.GetValues(root);
+                getFirstData = false;
             }
             return View(test);
         }
@@ -42,7 +43,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             try
             {
                 //string g1= System.IO.Path.Combine(appPath, FilePath);
-                if (!String.IsNullOrEmpty(file.Path))
+                if (!String.IsNullOrEmpty(test[id].Path))
                 {
                     if (test[id - 1].FileType == "Directory") { System.IO.Directory.Move(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].Path + @"\" + file.Name); }
                     else { System.IO.File.Move(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].Path + @"\" + file.Name); }
@@ -73,7 +74,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         // POST: FileController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteAsync(int id, File file)
+        public ActionResult DeleteAsync(int id)
         {
             try
             {
@@ -135,15 +136,13 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
         public ActionResult OpenDictionary(int id)
         {
-                test = data.GetValues(root + @"\" + test[id - 1].Name);
+                test = data.GetValues(root + @"\" + test[id].Path+ @"\" + test[id - 1].Name);
                 return RedirectToAction(nameof(Index));
         }
         
         public async Task<IActionResult> DownloadFileFromFileSystem(int id)
         {
-            string file;
-            if (String.IsNullOrEmpty(test[id - 1].Path)) file = root + @"\" + test[id - 1].Name;
-            else file = root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name;
+            string file = String.IsNullOrEmpty(test[id - 1].Path) ? root + @"\" + test[id - 1].Name : root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name;
             System.IO.MemoryStream memory = new System.IO.MemoryStream();
             using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open))
             {

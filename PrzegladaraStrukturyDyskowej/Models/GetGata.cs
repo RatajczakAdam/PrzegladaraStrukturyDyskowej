@@ -63,7 +63,7 @@ namespace PrzegladaraStrukturyDyskowej.Models
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
-                Path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
+                Path = @"\"+dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
                 Atributes = dirInfo.Attributes.ToString()
             };
             return info;
