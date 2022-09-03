@@ -1,5 +1,4 @@
 ﻿using DocumentFormat.OpenXml.Office.CustomUI;
-using Google.Apis.Compute.v1.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 
 namespace PrzegladaraStrukturyDyskowej.Models
 {
@@ -34,7 +32,7 @@ namespace PrzegladaraStrukturyDyskowej.Models
             foreach (string s in fileArr)
             {
                 FileInfo file = new FileInfo(s);
-                File fil = GetDirInfo(file, s);
+                File fil = GetFileInfo(file, s);
                 fil.id = filesInformation.Count + 1;
                 filesInformation.Add(fil);
             }
@@ -42,29 +40,29 @@ namespace PrzegladaraStrukturyDyskowej.Models
         }
         private File GetFileInfo(FileInfo fileInfo, string filePath)
         {
-            char[] MyChar0 = root.ToCharArray();
-            char[] MyChar1 = fileInfo.Name.ToCharArray();
+            char[] mineRoot = root.ToCharArray();
+            char[] namefile = fileInfo.Name.ToCharArray();
             File info = new File {
-                FileIcon = Icon.ExtractAssociatedIcon(filePath),
+                //FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = fileInfo.Name,
                 LastWriteTime = fileInfo.LastWriteTime,
                 FileType = fileInfo.Attributes.ToString(),
                 WeightByte = fileInfo.Length.ToString(),
-                path=fileInfo.FullName.TrimStart(MyChar0).TrimEnd(MyChar1)
+                path=fileInfo.FullName.TrimStart(mineRoot).TrimEnd(namefile)
             };
             return info;
         }
         private File GetDirInfo(FileInfo dirInfo, string filePath)
         {
-            char[] MyChar0 = root.ToCharArray();
-            char[] MyChar1 = dirInfo.Name.ToCharArray();
+            char[] mineRoot = root.ToCharArray();
+            char[] nameDir = dirInfo.Name.ToCharArray();
             File info = new File
             {
                 //FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
-                path = dirInfo.FullName.TrimStart(MyChar0).TrimEnd(MyChar1)
+                path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir)
             };
             return info;
         }

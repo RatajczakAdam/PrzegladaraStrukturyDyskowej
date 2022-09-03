@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Configuration;
 using PrzegladaraStrukturyDyskowej.Models;
 
-
 namespace PrzegladaraStrukturyDyskowej.Controllers
 {
     public class FileController : Controller
@@ -19,22 +18,12 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         // GET: FileController
         public ActionResult Index()
         {
-            test = data.GetValues(root);
+            if (test.Count==0)
+            {
+                test = data.GetValues(root);
+            }
             return View(test);
         }
-
-        // GET: FileController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: FileController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
 
 
         // GET: FileController/Edit/5
@@ -50,19 +39,19 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         {
             try
             {
-
+                //string g1= System.IO.Path.Combine(appPath, FilePath);
                 if (!String.IsNullOrEmpty(file.path))
                 {
-                    System.IO.File.Copy(root + @"\" + test[id].path + @"\" + test[id].Name, root + @"\" + test[id].path + @"\" + file.Name);
-                    System.IO.File.Delete(root + @"\" + test[id].path + @"\" + test[id].Name);
-                    test = data.GetValues(root + @"\" + test[id].path);
+                    if (test[id - 1].FileType == "Directory") { System.IO.Directory.Move(root + @"\" + test[id - 1].path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].path + @"\" + file.Name); }
+                    else { System.IO.File.Move(root + @"\" + test[id - 1].path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].path + @"\" + file.Name); }
+                    test = data.GetValues(root + @"\" + test[id-1].path);
                  }
                 else
                 {
-                    System.IO.File.Copy(root + @"\" + test[id].Name, root + @"\" + file.Name);
-                    System.IO.File.Delete(root + @"\" + test[id-1].Name);
-                test = data.GetValues(root);
-            }
+                    if (test[id-1].FileType == "Directory") { System.IO.Directory.Move(System.IO.Path.Combine(root, test[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    else { System.IO.File.Move(System.IO.Path.Combine(root, test[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    test = data.GetValues(root);
+                }
                 
                 return RedirectToAction(nameof(Index));
 
@@ -82,15 +71,61 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         // POST: FileController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, File file)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (String.IsNullOrEmpty(test[id - 1].path))
+                {
+                    if (test[id - 1].FileType == "Directory")
+                    {
+                        if (data.GetValues(root + @"\" + test[id - 1].Name).Count() == 0)
+                        {
+                            System.IO.Directory.Delete(root + @"\" + test[id - 1].Name);
+                            test = data.GetValues(root);
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            return View(test.FirstOrDefault(x => x.id == id));
+                        }
+                    }
+                    else
+                    {
+                        System.IO.File.Delete(root + @"\" + test[id - 1].Name);
+                        test = data.GetValues(root);
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+
+                else
+                {
+                    if (test[id - 1].FileType == "Directory")
+                    {
+                        if (data.GetValues(root + @"\" + test[id - 1].Name).Count() == 0)
+                        {
+                            System.IO.Directory.Delete(root + @"\" + test[id - 1].path + @"\" + test[id - 1].Name);
+                            test = data.GetValues(root + @"\" + test[id - 1].path);
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            return View(test.FirstOrDefault(x => x.id == id));
+                        }
+                    }
+                    else
+                    {
+                        System.IO.File.Delete(root + @"\" + test[id - 1].path + @"\" + test[id - 1].Name);
+                        test = data.GetValues(root + @"\" + test[id - 1].path);
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+
             }
+
             catch
             {
-                return View();
+                return View(test.FirstOrDefault(x => x.id == id));
             }
         }
     }
