@@ -17,16 +17,16 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.ActionLink("Nazwa Pliku", "Index", new { sortBy = ViewBag.NameSortParm })
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastWriteTime)
+                    @Html.ActionLink("Data modyfikacji", "Index", new { sortBy = ViewBag.LastWriteTimeSortParm })
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.WeightByte)
+                    @Html.ActionLink("Rozmia Bit", "Index", new { sortBy = ViewBag.WeightByteSortParm })
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FileType)
+                    @Html.ActionLink("Typ", "Index", new { sortBy = ViewBag.FileTypeSortParm })
                 </th>
                 <th></th>
             </tr>

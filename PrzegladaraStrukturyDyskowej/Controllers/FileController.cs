@@ -25,6 +25,40 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
                 test = data.GetValues(root);
                 getFirstData = false;
             }
+            ViewBag.NameSortParm = sortBy== "Name" ? "Name_desc" : "Name";
+            ViewBag.LastWriteTimeSortParm = sortBy == "LastWriteTime" ? "LastWriteTime_desc" : "LastWriteTime";
+            ViewBag.WeightByteSortParm = sortBy == "WeightByte" ? "WeightByte_desc" : "WeightByte";
+            ViewBag.FileTypeSortParm = sortBy == "FileType" ? "FileType_desc" : "FileType";
+           
+            switch (sortBy)
+            {
+                case "Name_desc":
+                    test = test.OrderByDescending(s => s.Name).ToList();
+                    break;
+                case "Name":
+                    test = test.OrderBy(s => s.Name).ToList();
+                    break;
+                case "LastWriteTime_desc":
+                    test = test.OrderByDescending(s => s.LastWriteTime).ToList();
+                    break;
+                case "LastWriteTime":
+                    test = test.OrderBy(s => s.LastWriteTime).ToList();
+                    break;
+                case "WeightByte_desc":
+                    test = test.OrderByDescending(s => s.WeightByte).ToList();
+                    break;
+                case "WeightByte":
+                    test = test.OrderBy(s => s.WeightByte).ToList();
+                    break;
+                case "FileType_desc":
+                    test = test.OrderByDescending(s => s.FileType).ToList();
+                    break;
+                case "FileType":
+                    test = test.OrderBy(s => s.FileType).ToList();
+                    break;
+                default:
+                    break;
+            }
             return View(test);
         }
 
