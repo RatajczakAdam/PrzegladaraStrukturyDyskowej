@@ -26,14 +26,14 @@ namespace PrzegladaraStrukturyDyskowej.Models
             {
                 FileInfo directory = new FileInfo(s);
                 File dir = GetDirInfo(directory, s);
-                dir.id = filesInformation.Count + 1;
+                dir.Id = filesInformation.Count + 1;
                 filesInformation.Add(dir);
             }
             foreach (string s in fileArr)
             {
                 FileInfo file = new FileInfo(s);
                 File fil = GetFileInfo(file, s);
-                fil.id = filesInformation.Count + 1;
+                fil.Id = filesInformation.Count + 1;
                 filesInformation.Add(fil);
             }
             return filesInformation;
@@ -48,7 +48,8 @@ namespace PrzegladaraStrukturyDyskowej.Models
                 LastWriteTime = fileInfo.LastWriteTime,
                 FileType = fileInfo.Attributes.ToString(),
                 WeightByte = fileInfo.Length.ToString(),
-                path=fileInfo.FullName.TrimStart(mineRoot).TrimEnd(namefile)
+                Path = fileInfo.FullName.TrimStart(mineRoot).TrimEnd(namefile),
+                Atributes = fileInfo.Attributes.ToString()
             };
             return info;
         }
@@ -62,7 +63,8 @@ namespace PrzegladaraStrukturyDyskowej.Models
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
-                path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir)
+                Path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
+                Atributes = dirInfo.Attributes.ToString()
             };
             return info;
         }

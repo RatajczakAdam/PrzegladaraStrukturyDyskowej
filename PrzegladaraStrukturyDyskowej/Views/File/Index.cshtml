@@ -20,9 +20,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.FileType)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.path)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -45,7 +42,14 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FileIcon)
-            @Html.DisplayFor(modelItem => item.Name)
+            @if (item.FileType == "Directory")
+            {
+                @Html.ActionLink(item.Name, "OpenDictionary", new { id = item.Id });
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.Name)
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LastWriteTime)
@@ -57,11 +61,13 @@
             @Html.DisplayFor(modelItem => item.FileType)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.path)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Edytuj Nazwę", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }) |
+            @if (item.FileType != "Directory")
+            {
+               @Html.ActionLink("Pobierz", "DownloadFileFromFileSystem", new { id = item.Id });
+            }
+            
         </td>
     </tr>
         }
