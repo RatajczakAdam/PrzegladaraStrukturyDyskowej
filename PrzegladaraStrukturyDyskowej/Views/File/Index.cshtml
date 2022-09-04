@@ -2,11 +2,11 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Przegladara Struktury Dyskowej";
 }
 <div>
     <p>
-        home
+        home\
         @foreach (var item in Model)
         {
             @Html.DisplayFor(modelItem => item.Path)
@@ -23,12 +23,12 @@
                     @Html.ActionLink("Data modyfikacji", "Index", new { sortBy = ViewBag.LastWriteTimeSortParm })
                 </th>
                 <th>
-                    @Html.ActionLink("Rozmia Bit", "Index", new { sortBy = ViewBag.WeightByteSortParm })
+                    @Html.ActionLink("Rozmiar", "Index", new { sortBy = ViewBag.WeightByteSortParm })
                 </th>
                 <th>
                     @Html.ActionLink("Atrybuty", "Index", new { sortBy = ViewBag.FileTypeSortParm })
                 </th>
-                <th></th>
+                <th>Akcje</th>
             </tr>
         </thead>
         <tbody>

@@ -53,7 +53,7 @@ namespace PrzegladaraStrukturyDyskowej.Models
                 Name = fileInfo.Name,
                 LastWriteTime = fileInfo.LastWriteTime,
                 FileType = fileInfo.Attributes.ToString(),
-                WeightByte = fileInfo.Length.ToString(),
+                WeightByte = fileInfo.Length.ToString()+" b",
                 Path = fileInfo.FullName.TrimStart(mineRoot).TrimEnd(namefile),
                 Atributes = fileInfo.Attributes.ToString()
             };

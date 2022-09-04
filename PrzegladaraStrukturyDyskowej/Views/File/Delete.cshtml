@@ -1,14 +1,12 @@
 ﻿@model PrzegladaraStrukturyDyskowej.Models.File
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuń plik";
 }
 
-<h1>Delete</h1>
 
 <h3>Czy napewno chcesz usunąc plik?</h3>
 <div>
-    <h4>File</h4>
     <hr />
     <dl class="row">
         
@@ -30,16 +28,10 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.WeightByte)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FileType)
-        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index">Powrót do listy</a>
     </form>
 </div>
