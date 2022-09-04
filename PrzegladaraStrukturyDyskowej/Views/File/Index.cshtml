@@ -58,7 +58,14 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.FileIcon)
+                            @if (item.FileType == "Directory")
+                            {
+                                <img src="~/Images/Directory.ico" style="vertical-align: middle; height: 40px;">
+                            }
+                            else
+                            {
+                                <img src="~/Images/File.ico" style="vertical-align: middle; height: 40px;">
+                            }
                             @if (item.FileType == "Directory")
                             {
                                 @Html.ActionLink(item.Name, "OpenDictionary", new { id = item.Id });
@@ -66,7 +73,6 @@
                             else
                             {
                                 @Html.ActionLink(item.Name, "DownloadFileFromFileSystem", new { id = item.Id })
-
                             }
                         </td>
                         <td>

@@ -50,7 +50,6 @@ namespace PrzegladaraStrukturyDyskowej.Models
             char[] mineRoot = root.ToCharArray();
             char[] namefile = fileInfo.Name.ToCharArray();
             File info = new File {
-                //FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = fileInfo.Name,
                 LastWriteTime = fileInfo.LastWriteTime,
                 FileType = fileInfo.Attributes.ToString(),
@@ -66,7 +65,6 @@ namespace PrzegladaraStrukturyDyskowej.Models
             char[] nameDir = dirInfo.Name.ToCharArray();
             File info = new File
             {
-                //FileIcon = Icon.ExtractAssociatedIcon(filePath),
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
@@ -98,8 +96,6 @@ namespace PrzegladaraStrukturyDyskowej.Models
             }
             return newPath;
         }
-
-            //string to char pentla od końca zleneść / zapisać jakie id i złorzyć w stringa od początki do danego id
 
     }
 }
