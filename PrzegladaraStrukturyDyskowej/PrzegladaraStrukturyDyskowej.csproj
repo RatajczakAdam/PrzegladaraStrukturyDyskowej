@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\Images\Downloads.ico" />
-    <None Include="wwwroot\Images\Edit.ico" />
   </ItemGroup>
 
   <ItemGroup>
