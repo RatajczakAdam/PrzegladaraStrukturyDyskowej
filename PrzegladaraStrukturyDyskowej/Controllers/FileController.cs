@@ -87,7 +87,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
                 else
                 {
                     if (fileDictArr[id - 1].Atributes.Contains("Directory")) { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
-                    else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name + fileDictArr[id - 1].FileType)); }
+                    else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name)+fileDictArr[id - 1].FileType, System.IO.Path.Combine(root, file.Name + fileDictArr[id - 1].FileType)); }
                     fileDictArr = data.GetValues(root);
                 }
 
