@@ -26,59 +26,70 @@
                     @Html.ActionLink("Rozmia Bit", "Index", new { sortBy = ViewBag.WeightByteSortParm })
                 </th>
                 <th>
-                    @Html.ActionLink("Typ", "Index", new { sortBy = ViewBag.FileTypeSortParm })
+                    @Html.ActionLink("Atrybuty", "Index", new { sortBy = ViewBag.FileTypeSortParm })
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    @Html.ActionLink("[...]", "[...]", new { /* id=item.id */ })
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FileIcon)
-                        @if (item.FileType == "Directory")
-                        {
-                            @Html.ActionLink(item.Name, "OpenDictionary", new { id = item.Id },new { id="dict"});
-                        }
-                        else
-                        {
-                            @Html.ActionLink(item.Name, "DownloadFileFromFileSystem", new { id = item.Id })
-                        
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastWriteTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WeightByte)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FileType)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edytuj Nazwę", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Usuń", "Delete", new { id = item.Id }) |
-                        @if (item.FileType != "Directory")
-                        {
-                            @Html.ActionLink("Pobierz", "DownloadFileFromFileSystem", new { id = item.Id });
-                        }
+                if (!string.IsNullOrEmpty(item.Path))
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("[...]", "GoBack")
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+                break;
+            }
+            @foreach (var item in Model)
+            {
+                @if (!string.IsNullOrEmpty(item.Name))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FileIcon)
+                            @if (item.FileType == "Directory")
+                            {
+                                @Html.ActionLink(item.Name, "OpenDictionary", new { id = item.Id });
+                            }
+                            else
+                            {
+                                @Html.ActionLink(item.Name, "DownloadFileFromFileSystem", new { id = item.Id })
 
-                    </td>
-                </tr>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastWriteTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WeightByte)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atributes)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edytuj Nazwę", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }) |
+                            @if (item.FileType != "Directory")
+                            {
+                                @Html.ActionLink("Pobierz", "DownloadFileFromFileSystem", new { id = item.Id });
+                            }
+
+                        </td>
+                    </tr>
+                }
+
             }
         </tbody>
     </table>

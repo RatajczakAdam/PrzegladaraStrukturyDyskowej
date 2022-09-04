@@ -13,7 +13,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 {
     public class FileController : Controller
     {
-        private static List<File> test = new List<File>();
+        private static List<File> fileDictArr = new List<File>();
         private string root = ConfigurationManager.AppSettings["root"];
         private GetGata data = new GetGata();
         private static bool getFirstData = true;
@@ -22,7 +22,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         {
             if (getFirstData)
             {
-                test = data.GetValues(root);
+                fileDictArr = data.GetValues(root);
                 getFirstData = false;
             }
             ViewBag.NameSortParm = sortBy== "Name" ? "Name_desc" : "Name";
@@ -33,40 +33,40 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             switch (sortBy)
             {
                 case "Name_desc":
-                    test = test.OrderByDescending(s => s.Name).ToList();
+                    fileDictArr = fileDictArr.OrderByDescending(s => s.Name).ToList();
                     break;
                 case "Name":
-                    test = test.OrderBy(s => s.Name).ToList();
+                    fileDictArr = fileDictArr.OrderBy(s => s.Name).ToList();
                     break;
                 case "LastWriteTime_desc":
-                    test = test.OrderByDescending(s => s.LastWriteTime).ToList();
+                    fileDictArr = fileDictArr.OrderByDescending(s => s.LastWriteTime).ToList();
                     break;
                 case "LastWriteTime":
-                    test = test.OrderBy(s => s.LastWriteTime).ToList();
+                    fileDictArr = fileDictArr.OrderBy(s => s.LastWriteTime).ToList();
                     break;
                 case "WeightByte_desc":
-                    test = test.OrderByDescending(s => s.WeightByte).ToList();
+                    fileDictArr = fileDictArr.OrderByDescending(s => s.WeightByte).ToList();
                     break;
                 case "WeightByte":
-                    test = test.OrderBy(s => s.WeightByte).ToList();
+                    fileDictArr = fileDictArr.OrderBy(s => s.WeightByte).ToList();
                     break;
                 case "FileType_desc":
-                    test = test.OrderByDescending(s => s.FileType).ToList();
+                    fileDictArr = fileDictArr.OrderByDescending(s => s.FileType).ToList();
                     break;
                 case "FileType":
-                    test = test.OrderBy(s => s.FileType).ToList();
+                    fileDictArr = fileDictArr.OrderBy(s => s.FileType).ToList();
                     break;
                 default:
                     break;
             }
-            return View(test);
+            return View(fileDictArr);
         }
 
 
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(test.FirstOrDefault(x => x.Id == id));
+            return View(fileDictArr.FirstOrDefault(x => x.Id == id));
         }
 
         // POST: FileController/Edit/5
@@ -77,17 +77,17 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             try
             {
                 //string g1= System.IO.Path.Combine(appPath, FilePath);
-                if (!String.IsNullOrEmpty(test[id].Path))
+                if (!String.IsNullOrEmpty(fileDictArr[id].Path))
                 {
-                    if (test[id - 1].FileType == "Directory") { System.IO.Directory.Move(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].Path + @"\" + file.Name); }
-                    else { System.IO.File.Move(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name, root + @"\" + test[id - 1].Path + @"\" + file.Name); }
-                    test = data.GetValues(root + @"\" + test[id - 1].Path);
+                    if (fileDictArr[id - 1].FileType == "Directory") { System.IO.Directory.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
+                    else { System.IO.File.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
+                    fileDictArr = data.GetValues(root + @"\" + fileDictArr[id - 1].Path);
                 }
                 else
                 {
-                    if (test[id - 1].FileType == "Directory") { System.IO.Directory.Move(System.IO.Path.Combine(root, test[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
-                    else { System.IO.File.Move(System.IO.Path.Combine(root, test[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
-                    test = data.GetValues(root);
+                    if (fileDictArr[id - 1].FileType == "Directory") { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    fileDictArr = data.GetValues(root);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -95,14 +95,14 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             }
             catch
             {
-                return View(test.FirstOrDefault(x => x.Id == id));
+                return View(fileDictArr.FirstOrDefault(x => x.Id == id));
             }
         }
 
         // GET: FileController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(test.FirstOrDefault(x => x.Id == id));
+            return View(fileDictArr.FirstOrDefault(x => x.Id == id));
         }
 
         // POST: FileController/Delete/5
@@ -112,48 +112,48 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         {
             try
             {
-                if (String.IsNullOrEmpty(test[id - 1].Path))
+                if (String.IsNullOrEmpty(fileDictArr[id - 1].Path))
                 {
-                    if (test[id - 1].FileType == "Directory")
+                    if (fileDictArr[id - 1].FileType == "Directory")
                     {
-                        if (data.GetValues(root + @"\" + test[id - 1].Name).Count() == 0)
+                        if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {
-                            System.IO.Directory.Delete(root + @"\" + test[id - 1].Name);
-                            test = data.GetValues(root);
+                            System.IO.Directory.Delete(root + @"\" + fileDictArr[id - 1].Name);
+                            fileDictArr = data.GetValues(root);
                             return RedirectToAction(nameof(Index));
                         }
                         else
                         {
-                            return View(test.FirstOrDefault(x => x.Id == id));
+                            return View(fileDictArr.FirstOrDefault(x => x.Id == id));
                         }
                     }
                     else
                     {
-                        System.IO.File.Delete(root + @"\" + test[id - 1].Name);
-                        test = data.GetValues(root);
+                        System.IO.File.Delete(root + @"\" + fileDictArr[id - 1].Name);
+                        fileDictArr = data.GetValues(root);
                         return RedirectToAction(nameof(Index));
                     }
                 }
 
                 else
                 {
-                    if (test[id - 1].FileType == "Directory")
+                    if (fileDictArr[id - 1].FileType == "Directory")
                     {
-                        if (data.GetValues(root + @"\" + test[id - 1].Name).Count() == 0)
+                        if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {
-                            System.IO.Directory.Delete(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name);
-                            test = data.GetValues(root + @"\" + test[id - 1].Path);
+                            System.IO.Directory.Delete(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name);
+                            fileDictArr = data.GetValues(root + @"\" + fileDictArr[id - 1].Path);
                             return RedirectToAction(nameof(Index));
                         }
                         else
                         {
-                            return View(test.FirstOrDefault(x => x.Id == id));
+                            return View(fileDictArr.FirstOrDefault(x => x.Id == id));
                         }
                     }
                     else
                     {
-                        System.IO.File.Delete(root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name);
-                        test = data.GetValues(root + @"\" + test[id - 1].Path);
+                        System.IO.File.Delete(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name);
+                        fileDictArr = data.GetValues(root + @"\" + fileDictArr[id - 1].Path);
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -162,7 +162,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
             catch
             {
-                return View(test.FirstOrDefault(x => x.Id == id));
+                return View(fileDictArr.FirstOrDefault(x => x.Id == id));
             }
         }
 
@@ -170,13 +170,13 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
         public ActionResult OpenDictionary(int id)
         {
-                test = data.GetValues(root + @"\" + test[id].Path+ @"\" + test[id - 1].Name);
+                fileDictArr = data.GetValues(root + @"\" + fileDictArr[id].Path+ @"\" + fileDictArr[id - 1].Name);
                 return RedirectToAction(nameof(Index));
         }
         
         public async Task<IActionResult> DownloadFileFromFileSystem(int id)
         {
-            string file = String.IsNullOrEmpty(test[id - 1].Path) ? root + @"\" + test[id - 1].Name : root + @"\" + test[id - 1].Path + @"\" + test[id - 1].Name;
+            string file = String.IsNullOrEmpty(fileDictArr[id - 1].Path) ? root + @"\" + fileDictArr[id - 1].Name : root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name;
             System.IO.MemoryStream memory = new System.IO.MemoryStream();
             using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open))
             {
@@ -185,7 +185,13 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             memory.Position = 0;
             string contentType;
             new FileExtensionContentTypeProvider().TryGetContentType(file, out contentType);
-            return File(memory, contentType, test[id - 1].Name);
+            return File(memory, contentType, fileDictArr[id - 1].Name);
+        }
+        public ActionResult GoBack()
+        {
+            string newPatch = data.GetOldPatch(fileDictArr[0].Path);
+            fileDictArr = data.GetValues(root+@"\"+ newPatch);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

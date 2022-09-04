@@ -17,7 +17,14 @@ namespace PrzegladaraStrukturyDyskowej.Models
             string[] files = Directory.GetFiles(path);
             string[] dir = Directory.GetDirectories(path);
             List<File> filesInformation = Makelist(files, dir);
-            return Makelist(files, dir);
+            if (filesInformation.Count == 0 )
+            {
+                char[] mineRoot = root.ToCharArray();
+                string pathDict = path.TrimStart(mineRoot);
+                File info = new File { Path = pathDict };
+                filesInformation.Add(info);
+            }
+            return filesInformation;
         }
         private List<File> Makelist(string[] fileArr, string[] dirArr)
         {
@@ -63,10 +70,38 @@ namespace PrzegladaraStrukturyDyskowej.Models
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
                 FileType = dirInfo.Attributes.ToString(),
-                Path = @"\"+dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
+                Path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
                 Atributes = dirInfo.Attributes.ToString()
             };
             return info;
         }
+        public string GetOldPatch(string path)
+        {
+            string newPath="";
+            int lastValue=0;
+            char[] charPath = path.ToCharArray();
+            char[] testValue = @"\".ToCharArray();
+
+            for (int i = charPath.Length ; i >0; i--)
+            {
+                if (i<2)
+                {
+                    break;
+                }
+                else if (charPath[i-2]== testValue[0])
+                {
+                    lastValue = i-1 ;
+                    break;
+                }
+            }
+            for (int i = 0; i < lastValue; i++)
+            {
+                newPath = newPath + charPath[i];
+            }
+            return newPath;
+        }
+
+            //string to char pentla od końca zleneść / zapisać jakie id i złorzyć w stringa od początki do danego id
+
     }
 }
