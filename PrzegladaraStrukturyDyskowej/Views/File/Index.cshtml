@@ -58,7 +58,7 @@
                 {
                     <tr>
                         <td>
-                            @if (item.FileType.Contains("Directory"))
+                            @if (item.Atributes.Contains("Directory"))
                             {
                                 <img src="~/Images/Directory.ico" style="vertical-align: middle; height: 40px;">
                             }
@@ -66,7 +66,7 @@
                             {
                                 <img src="~/Images/File.ico" style="vertical-align: middle; height: 40px;">
                             }
-                            @if (item.FileType.Contains("Directory"))
+                            @if (item.Atributes.Contains("Directory"))
                             {
                                 @Html.ActionLink(item.Name, "OpenDictionary", new { id = item.Id });
                             }
@@ -91,7 +91,7 @@
                             <a href="@Url.Action("Delete", "File", new { id = item.Id })">
                                 <img src="~/Images/delete.ico" style="vertical-align: middle; width: 40px;">
                             </a> |
-                            @if (!item.FileType.Contains("Directory"))
+                            @if (!item.Atributes.Contains("Directory"))
                             {
                                 <a href="@Url.Action("DownloadFileFromFileSystem", "File", new { id = item.Id })">
                                     <img src="~/Images/Downloads.ico" style="vertical-align: middle; width: 40px;">

@@ -66,7 +66,9 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         // GET: FileController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(fileDictArr.FirstOrDefault(x => x.Id == id));
+            File edit = fileDictArr.FirstOrDefault(x => x.Id == id);
+            if (!edit.Atributes.Contains("Directory")) edit.Name = edit.Name.TrimEnd(edit.FileType.ToCharArray());
+            return View(edit);
         }
 
         // POST: FileController/Edit/5
@@ -76,17 +78,16 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
         {
             try
             {
-                //string g1= System.IO.Path.Combine(appPath, FilePath);
                 if (!String.IsNullOrEmpty(fileDictArr[id].Path))
                 {
-                    if (fileDictArr[id - 1].FileType.Contains("Directory")) { System.IO.Directory.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
-                    else { System.IO.File.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
+                    if (fileDictArr[id - 1].Atributes.Contains("Directory")) { System.IO.Directory.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
+                    else { System.IO.File.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name+fileDictArr[id - 1].FileType, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name + fileDictArr[id - 1].FileType); }
                     fileDictArr = data.GetValues(root + @"\" + fileDictArr[id - 1].Path);
                 }
                 else
                 {
-                    if (fileDictArr[id - 1].FileType.Contains("Directory")) { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
-                    else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    if (fileDictArr[id - 1].Atributes.Contains("Directory")) { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name + fileDictArr[id - 1].FileType)); }
                     fileDictArr = data.GetValues(root);
                 }
 
@@ -114,7 +115,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             {
                 if (String.IsNullOrEmpty(fileDictArr[id - 1].Path))
                 {
-                    if (fileDictArr[id - 1].FileType.Contains("Directory"))
+                    if (fileDictArr[id - 1].Atributes.Contains("Directory"))
                     {
                         if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {
@@ -137,7 +138,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
                 else
                 {
-                    if (fileDictArr[id - 1].FileType.Contains("Directory"))
+                    if (fileDictArr[id - 1].Atributes.Contains("Directory"))
                     {
                         if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {

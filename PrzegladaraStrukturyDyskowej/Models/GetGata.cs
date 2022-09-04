@@ -32,34 +32,34 @@ namespace PrzegladaraStrukturyDyskowej.Models
             foreach (string s in dirArr)
             {
                 FileInfo directory = new FileInfo(s);
-                File dir = GetDirInfo(directory);
+                File dir = GetDirInfo(directory,s);
                 dir.Id = filesInformation.Count + 1;
                 filesInformation.Add(dir);
             }
             foreach (string s in fileArr)
             {
                 FileInfo file = new FileInfo(s);
-                File fil = GetFileInfo(file);
+                File fil = GetFileInfo(file,s);
                 fil.Id = filesInformation.Count + 1;
                 filesInformation.Add(fil);
             }
             return filesInformation;
         }
-        private File GetFileInfo(FileInfo fileInfo)
+        private File GetFileInfo(FileInfo fileInfo,string path)
         {
             char[] mineRoot = root.ToCharArray();
             char[] namefile = fileInfo.Name.ToCharArray();
             File info = new File {
                 Name = fileInfo.Name,
                 LastWriteTime = fileInfo.LastWriteTime,
-                FileType = fileInfo.Attributes.ToString(),
+                FileType = Path.GetExtension(path),
                 WeightByte = fileInfo.Length.ToString()+" b",
                 Path = fileInfo.FullName.TrimStart(mineRoot).TrimEnd(namefile),
                 Atributes = fileInfo.Attributes.ToString()
             };
             return info;
         }
-        private File GetDirInfo(FileInfo dirInfo)
+        private File GetDirInfo(FileInfo dirInfo, string path)
         {
             char[] mineRoot = root.ToCharArray();
             char[] nameDir = dirInfo.Name.ToCharArray();
@@ -67,7 +67,6 @@ namespace PrzegladaraStrukturyDyskowej.Models
             {
                 Name = dirInfo.Name,
                 LastWriteTime = dirInfo.LastWriteTime,
-                FileType = dirInfo.Attributes.ToString(),
                 Path = dirInfo.FullName.TrimStart(mineRoot).TrimEnd(nameDir),
                 Atributes = dirInfo.Attributes.ToString()
             };
