@@ -79,13 +79,13 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
                 //string g1= System.IO.Path.Combine(appPath, FilePath);
                 if (!String.IsNullOrEmpty(fileDictArr[id].Path))
                 {
-                    if (fileDictArr[id - 1].FileType == "Directory") { System.IO.Directory.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
+                    if (fileDictArr[id - 1].FileType.Contains("Directory")) { System.IO.Directory.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
                     else { System.IO.File.Move(root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name, root + @"\" + fileDictArr[id - 1].Path + @"\" + file.Name); }
                     fileDictArr = data.GetValues(root + @"\" + fileDictArr[id - 1].Path);
                 }
                 else
                 {
-                    if (fileDictArr[id - 1].FileType == "Directory") { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
+                    if (fileDictArr[id - 1].FileType.Contains("Directory")) { System.IO.Directory.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
                     else { System.IO.File.Move(System.IO.Path.Combine(root, fileDictArr[id - 1].Name), System.IO.Path.Combine(root, file.Name)); }
                     fileDictArr = data.GetValues(root);
                 }
@@ -114,7 +114,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
             {
                 if (String.IsNullOrEmpty(fileDictArr[id - 1].Path))
                 {
-                    if (fileDictArr[id - 1].FileType == "Directory")
+                    if (fileDictArr[id - 1].FileType.Contains("Directory"))
                     {
                         if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {
@@ -137,7 +137,7 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
                 else
                 {
-                    if (fileDictArr[id - 1].FileType == "Directory")
+                    if (fileDictArr[id - 1].FileType.Contains("Directory"))
                     {
                         if (data.GetValues(root + @"\" + fileDictArr[id - 1].Name).Count() == 0)
                         {
@@ -170,22 +170,29 @@ namespace PrzegladaraStrukturyDyskowej.Controllers
 
         public ActionResult OpenDictionary(int id)
         {
-                fileDictArr = data.GetValues(root + @"\" + fileDictArr[id].Path+ @"\" + fileDictArr[id - 1].Name);
+                fileDictArr = data.GetValues(root + @"\" + fileDictArr[id-1].Path+ @"\" + fileDictArr[id - 1].Name);
                 return RedirectToAction(nameof(Index));
         }
         
         public async Task<IActionResult> DownloadFileFromFileSystem(int id)
         {
-            string file = String.IsNullOrEmpty(fileDictArr[id - 1].Path) ? root + @"\" + fileDictArr[id - 1].Name : root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name;
-            System.IO.MemoryStream memory = new System.IO.MemoryStream();
-            using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open))
+            try
             {
-                await stream.CopyToAsync(memory);
+                string file = String.IsNullOrEmpty(fileDictArr[id - 1].Path) ? root + @"\" + fileDictArr[id - 1].Name : root + @"\" + fileDictArr[id - 1].Path + @"\" + fileDictArr[id - 1].Name;
+                System.IO.MemoryStream memory = new System.IO.MemoryStream();
+                using (System.IO.FileStream stream = new System.IO.FileStream(file, System.IO.FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                string contentType;
+                new FileExtensionContentTypeProvider().TryGetContentType(file, out contentType);
+                return File(memory, contentType, fileDictArr[id - 1].Name);
             }
-            memory.Position = 0;
-            string contentType;
-            new FileExtensionContentTypeProvider().TryGetContentType(file, out contentType);
-            return File(memory, contentType, fileDictArr[id - 1].Name);
+            catch 
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         public ActionResult GoBack()
         {

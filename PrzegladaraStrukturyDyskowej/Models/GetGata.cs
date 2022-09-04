@@ -32,20 +32,20 @@ namespace PrzegladaraStrukturyDyskowej.Models
             foreach (string s in dirArr)
             {
                 FileInfo directory = new FileInfo(s);
-                File dir = GetDirInfo(directory, s);
+                File dir = GetDirInfo(directory);
                 dir.Id = filesInformation.Count + 1;
                 filesInformation.Add(dir);
             }
             foreach (string s in fileArr)
             {
                 FileInfo file = new FileInfo(s);
-                File fil = GetFileInfo(file, s);
+                File fil = GetFileInfo(file);
                 fil.Id = filesInformation.Count + 1;
                 filesInformation.Add(fil);
             }
             return filesInformation;
         }
-        private File GetFileInfo(FileInfo fileInfo, string filePath)
+        private File GetFileInfo(FileInfo fileInfo)
         {
             char[] mineRoot = root.ToCharArray();
             char[] namefile = fileInfo.Name.ToCharArray();
@@ -59,7 +59,7 @@ namespace PrzegladaraStrukturyDyskowej.Models
             };
             return info;
         }
-        private File GetDirInfo(FileInfo dirInfo, string filePath)
+        private File GetDirInfo(FileInfo dirInfo)
         {
             char[] mineRoot = root.ToCharArray();
             char[] nameDir = dirInfo.Name.ToCharArray();
