@@ -14,9 +14,14 @@ namespace PrzegladaraStrukturyDyskowej.Models
         private string root = ConfigurationManager.AppSettings["root"];
         public List<File> GetValues(string path)
         {
-            string[] files = Directory.GetFiles(path);
-            string[] dir = Directory.GetDirectories(path);
-            List<File> filesInformation = Makelist(files, dir);
+            List<File> filesInformation = new List<File>();
+            try
+            {
+                string[] files = Directory.GetFiles(path);
+                string[] dir = Directory.GetDirectories(path);
+                filesInformation = Makelist(files, dir);
+            }
+            catch { }
             if (filesInformation.Count == 0 )
             {
                 char[] mineRoot = root.ToCharArray();
