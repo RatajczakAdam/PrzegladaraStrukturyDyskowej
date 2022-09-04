@@ -84,10 +84,8 @@ namespace PrzegladaraStrukturyDyskowej.Models
 
             for (int i = charPath.Length ; i >0; i--)
             {
-                if (i<2)
-                {
-                    break;
-                }
+                
+                if (i<2) break;
                 else if (charPath[i-2]== testValue[0])
                 {
                     lastValue = i-1 ;

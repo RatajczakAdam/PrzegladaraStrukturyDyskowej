@@ -79,11 +79,17 @@
                             @Html.DisplayFor(modelItem => item.Atributes)
                         </td>
                         <td>
-                            @Html.ActionLink("Edytuj Nazwę", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }) |
+                            <a href="@Url.Action("Edit", "File", new { id = item.Id })">
+                                <img src="~/Images/Edit.ico" style="vertical-align: middle; width: 40px;">
+                            </a> |
+                            <a href="@Url.Action("Delete", "File", new { id = item.Id })">
+                                <img src="~/Images/delete.ico" style="vertical-align: middle; width: 40px;">
+                            </a> |
                             @if (item.FileType != "Directory")
                             {
-                                @Html.ActionLink("Pobierz", "DownloadFileFromFileSystem", new { id = item.Id });
+                                <a href="@Url.Action("DownloadFileFromFileSystem", "File", new { id = item.Id })">
+                                    <img src="~/Images/Downloads.ico" style="vertical-align: middle; width: 40px;">
+                                </a>
                             }
 
                         </td>
